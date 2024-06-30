@@ -9,8 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/main-page")
-public class MainPageServlet extends HttpServlet {
+public class MainPageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("pages/main-page.jsp").forward(req, resp);    }
+        req.getRequestDispatcher("pages/main-page.jsp").forward(req, resp);
+    }
 }
