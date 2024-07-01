@@ -1,16 +1,16 @@
 package main.util;
 
-import lombok.experimental.UtilityClass;
 import main.entity.Match;
 import main.entity.Player;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.cfg.Configuration;
 
-
-@UtilityClass
 public class HibernateUtil {
-    private static final SessionFactory sessionFactory = buildSessionFactory();
+    private static final SessionFactory INSTANCE = buildSessionFactory();
+
+    private HibernateUtil() {
+    }
 
     private static SessionFactory buildSessionFactory() {
         try {
@@ -28,6 +28,6 @@ public class HibernateUtil {
     }
 
     public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+        return INSTANCE;
     }
 }

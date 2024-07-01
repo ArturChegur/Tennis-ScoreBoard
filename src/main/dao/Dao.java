@@ -1,7 +1,9 @@
 package main.dao;
 
+import java.util.List;
+
 public interface Dao<T> {
     void add(T entity);
 
-    T findById(Integer id);
+    List<T> findAll();
 }

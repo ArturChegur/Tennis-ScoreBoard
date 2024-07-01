@@ -17,11 +17,11 @@ public class Match {
 
     @ManyToOne
     @JoinColumn(name = "first_player")
-    private Integer FirstPlayer;
+    private Player firstPlayer;
 
     @ManyToOne
     @JoinColumn(name = "second_player")
-    private Integer SecondPlayer;
+    private Player secondPlayer;
 
     @Column(name = "winner", nullable = false)
     private Integer winner;

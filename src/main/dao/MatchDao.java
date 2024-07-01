@@ -4,6 +4,7 @@ import main.entity.Match;
 import main.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -19,21 +20,21 @@ public class MatchDao implements Dao<Match> {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
         }
     }
 
     @Override
-    public Match findById(Integer id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Match match = session.get(Match.class, id);
-        }
-        return null;
-    }
-
     public List<Match> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from Match", Match.class).list();
+        }
+    }
+
+    public List<Match> findByPlayerId(Integer id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Match> query = session.createQuery("from Match where firstPlayer.id = :playerId or secondPlayer.id = :playerId", Match.class);
+            query.setParameter("playerId", id);
+            return query.list();
         }
     }
 }
