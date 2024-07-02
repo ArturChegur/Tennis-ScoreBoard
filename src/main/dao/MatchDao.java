@@ -9,6 +9,11 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class MatchDao implements Dao<Match> {
+    private static final MatchDao INSTANCE = new MatchDao();
+
+    private MatchDao() {
+    }
+
     @Override
     public void add(Match entity) {
         Transaction transaction = null;
@@ -36,5 +41,9 @@ public class MatchDao implements Dao<Match> {
             query.setParameter("playerId", id);
             return query.list();
         }
+    }
+
+    public static MatchDao getInstance() {
+        return INSTANCE;
     }
 }

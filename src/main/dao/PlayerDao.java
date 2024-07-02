@@ -20,7 +20,7 @@ public class PlayerDao implements Dao<Player> {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(player);
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

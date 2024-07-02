@@ -68,7 +68,7 @@
             color: white;
         }
 
-        .notice {
+        .error-message {
             color: #007BFF;
             font-size: 14px;
             margin-top: 10px;
@@ -80,10 +80,14 @@
 <div class="background"></div>
 <div class="container">
     <h1>Start a New Match</h1>
-    <form action="/match-score" method="get">
+    <form action="/new-match" method="post">
         <input type="text" name="firstPlayer" placeholder="First player" required>
         <input type="text" name="secondPlayer" placeholder="Second player" required>
-        <div class="notice">Player names must be different and in English</div>
+        <div class="error-message">
+            <%= request.getAttribute("errorMessage") != null ? request.getAttribute("errorMessage") : "Player names must be different and in English" %>
+        </div>
         <button type="submit" class="button">Start Match</button>
     </form>
 </div>
+</body>
+</html>

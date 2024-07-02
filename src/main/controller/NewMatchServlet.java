@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import main.util.ParameterValidator;
 
 import java.io.IOException;
 
@@ -17,6 +18,15 @@ public class NewMatchServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //todo check if players exist otherwise create them create match instance then go tp matchscore
+        String firstPlayer = req.getParameter("firstPlayer");
+        String secondPlayer = req.getParameter("secondPlayer");
+
+        String errorMessage = ParameterValidator.validateNames(firstPlayer, secondPlayer);
+        if (errorMessage != null) {
+            req.setAttribute("errorMessage", errorMessage);
+            req.getRequestDispatcher("pages/new-match-page.jsp").forward(req, resp);
+        } else {
+            //todo going to play match
+        }
     }
 }
