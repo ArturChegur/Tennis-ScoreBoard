@@ -33,11 +33,11 @@ public class Match {
     @Getter
     @Setter
     public static class MatchScore {
-        private int firstPlayerScore = 1;
-        private int secondPlayerScore = 2;
-        private int firstPlayerGame = 3;
-        private int secondPlayerGame = 4;
-        private int firstPlayerSet = 5;
-        private int secondPlayerSet = 6;
+        private String firstPlayerScore = "0";
+        private String secondPlayerScore = "0";
+        private int firstPlayerGame = 0;
+        private int secondPlayerGame = 0;
+        private int firstPlayerSet = 0;
+        private int secondPlayerSet = 0;
     }
 }

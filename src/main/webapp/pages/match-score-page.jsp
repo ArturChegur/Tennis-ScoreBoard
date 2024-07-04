@@ -137,12 +137,12 @@
     <div class="button-container">
         <form action="/match-score" method="post" style="display: inline;">
             <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
-            <input type="hidden" name="winner" value="player1">
+            <input type="hidden" name="winner" value="first">
             <button type="submit" class="button"><%= request.getAttribute("firstName") %> won point</button>
         </form>
         <form action="/match-score" method="post" style="display: inline;">
             <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
-            <input type="hidden" name="winner" value="player2">
+            <input type="hidden" name="winner" value="second">
             <button type="submit" class="button"><%= request.getAttribute("secondName") %> won point</button>
         </form>
     </div>

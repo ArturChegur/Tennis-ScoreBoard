@@ -19,6 +19,10 @@ public class MatchScoreController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getParameter("uuid") == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         Match match = ongoingMatchesService.readMatch(uuid);
         if (match == null) {
@@ -38,9 +42,17 @@ public class MatchScoreController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String winner = req.getParameter("winner");
+        if (req.getParameter("uuid") == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         Match match = ongoingMatchesService.readMatch(uuid);
-        matchScoreCalculationService.add(match);
+        matchScoreCalculationService.addPoint(match, winner);
+        if (match.getWinner() != null) {
+            req.getRequestDispatcher("pages/main-page.jsp").forward(req, resp);
+        }
         doGet(req, resp);
     }
 }
