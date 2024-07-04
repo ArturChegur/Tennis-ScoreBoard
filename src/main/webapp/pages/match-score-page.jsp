@@ -47,11 +47,13 @@
             width: 100%;
             margin-bottom: 20px;
             border-collapse: collapse;
+            border: 1px solid #666;
         }
 
         th, td {
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #666;
+            text-align: center;
         }
 
         th {
@@ -68,11 +70,27 @@
             transition: transform 0.15s ease, background-color 0.15s ease;
             cursor: pointer;
             margin: 5px;
+            display: inline-block;
         }
 
         .button:hover {
             background-color: black;
             color: white;
+        }
+
+        .readonly-input {
+            border: none;
+            background: transparent;
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            pointer-events: none;
+            width: 100%;
+        }
+
+        .button-container {
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -84,30 +102,50 @@
         <thead>
         <tr>
             <th>Player</th>
-            <th>Score</th>
+            <th>Sets</th>
+            <th>Games</th>
+            <th>Points</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td id="player1Name">Player 1</td>
-            <td id="player1Score">0</td>
+            <td>
+                <input type="text" name="player1Name" value="<%= request.getAttribute("firstName") %>"
+                       class="readonly-input" readonly>
+            </td>
+            <td id="player1Sets"><%= request.getAttribute("firstSets") %>
+            </td>
+            <td id="player1Games"><%= request.getAttribute("firstGames") %>
+            </td>
+            <td id="player1Points"><%= request.getAttribute("firstPoints") %>
+            </td>
         </tr>
         <tr>
-            <td id="player2Name">Player 2</td>
-            <td id="player2Score">0</td>
+            <td>
+                <input type="text" name="player2Name" value="<%= request.getAttribute("secondName") %>"
+                       class="readonly-input" readonly>
+            </td>
+            <td id="player2Sets"><%= request.getAttribute("secondSets") %>
+            </td>
+            <td id="player2Games"><%= request.getAttribute("secondGames") %>
+            </td>
+            <td id="player2Points"><%= request.getAttribute("secondPoints") %>
+            </td>
         </tr>
         </tbody>
     </table>
-    <form action="/match-score" method="post">
-        <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
-        <input type="hidden" name="winner" value="player1">
-        <button type="submit" class="button">Player 1 Won Point</button>
-    </form>
-    <form action="/match-score" method="post">
-        <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
-        <input type="hidden" name="winner" value="player2">
-        <button type="submit" class="button">Player 2 Won Point</button>
-    </form>
+    <div class="button-container">
+        <form action="/match-score" method="post" style="display: inline;">
+            <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
+            <input type="hidden" name="winner" value="player1">
+            <button type="submit" class="button"><%= request.getAttribute("firstName") %> won point</button>
+        </form>
+        <form action="/match-score" method="post" style="display: inline;">
+            <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
+            <input type="hidden" name="winner" value="player2">
+            <button type="submit" class="button"><%= request.getAttribute("secondName") %> won point</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

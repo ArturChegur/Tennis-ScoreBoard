@@ -11,7 +11,9 @@ public final class ParameterValidator {
         if (!firstPlayer.matches("[a-zA-Z0-9]+") || !secondPlayer.matches("[a-zA-Z0-9]+")) {
             return "Player name can only contain English letters and numbers";
         }
-
+        if (firstPlayer.length() > 20 || secondPlayer.length() > 20) {
+            return "Player name is too long";
+        }
         if (firstPlayer.equals(secondPlayer)) {
             return "Player names must be different";
         }

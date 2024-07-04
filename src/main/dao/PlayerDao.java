@@ -1,10 +1,11 @@
 package main.dao;
 
 import main.entity.Player;
+import main.exception.PlayerExistsException;
 import main.util.HibernateUtil;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -15,16 +16,13 @@ public class PlayerDao implements Dao<Player> {
     }
 
     @Override
-    public void add(Player player) {
-        Transaction transaction = null;
+    public void add(Player player) throws PlayerExistsException {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+            session.beginTransaction();
             session.save(player);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            session.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            throw new PlayerExistsException();
         }
     }
 

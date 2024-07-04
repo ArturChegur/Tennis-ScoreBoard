@@ -23,6 +23,21 @@ public class Match {
     @JoinColumn(name = "second_player")
     private Player secondPlayer;
 
-    @Column(name = "winner", nullable = false)
-    private Integer winner;
+    @ManyToOne
+    @JoinColumn(name = "winner")
+    private Player winner;
+
+    @Transient
+    private MatchScore matchScore;
+
+    @Getter
+    @Setter
+    public static class MatchScore {
+        private int firstPlayerScore = 1;
+        private int secondPlayerScore = 2;
+        private int firstPlayerGame = 3;
+        private int secondPlayerGame = 4;
+        private int firstPlayerSet = 5;
+        private int secondPlayerSet = 6;
+    }
 }
