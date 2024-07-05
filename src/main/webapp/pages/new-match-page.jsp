@@ -44,6 +44,7 @@
         }
 
         input[type="text"] {
+            font-size: 16px;
             width: calc(100% - 22px);
             padding: 10px;
             margin: 10px 0;
@@ -81,8 +82,10 @@
 <div class="container">
     <h1>Start a New Match</h1>
     <form action="/new-match" method="post">
-        <input type="text" name="firstPlayer" placeholder="First player" required>
-        <input type="text" name="secondPlayer" placeholder="Second player" required>
+        <input type="text" name="firstPlayer" placeholder="First player" required
+               value="<%= (request.getAttribute("firstPlayer") != null) ? request.getAttribute("firstPlayer") : "" %>">
+        <input type="text" name="secondPlayer" placeholder="Second player" required
+               value="<%= (request.getAttribute("secondPlayer") != null) ? request.getAttribute("secondPlayer") : "" %>">
         <div class="error-message">
             <%= request.getAttribute("errorMessage") != null ? request.getAttribute("errorMessage") : "Player names must be different and in English" %>
         </div>

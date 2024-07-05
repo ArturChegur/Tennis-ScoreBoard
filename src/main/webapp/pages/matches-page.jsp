@@ -1,14 +1,16 @@
+<%@ page import="main.entity.Match" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Played Matches</title>
+    <title>Matches</title>
     <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Maven Pro', sans-serif;
             margin: 0;
-            overflow: hidden;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,88 +30,119 @@
         }
 
         .container {
-            width: 80%;
-            margin: 50px auto;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 800px;
             text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
+            margin-top: 40px;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            border: 1px solid #666;
         }
 
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
+            border: 1px solid #666;
+            text-align: center;
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #f4f4f4;
         }
 
-        .pagination {
-            display: flex;
-            justify-content: center;
-        }
-
-        .pagination a {
-            margin: 0 5px;
-            padding: 8px 16px;
-            text-decoration: none;
-            background-color: white;
+        .button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: transparent;
             color: black;
-            border: 1px solid black;
+            border: 2px solid black;
             border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+            cursor: pointer;
+            margin: 5px;
+            display: inline-block;
         }
 
-        .pagination a:hover {
+        .button:hover {
             background-color: black;
             color: white;
         }
 
-        .footer {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #777;
+        .input-field {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            margin: 5px;
+            display: inline-block;
+            width: 300px;
         }
 
-        .footer a {
-            color: #333;
+        .form-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .home-link {
+            font-size: 16px;
+            color: black;
             text-decoration: none;
+            margin-right: auto;
         }
 
-        .footer a:hover {
+        .home-link:hover {
             text-decoration: underline;
+            color: black;
         }
 
-        .search-container {
-            margin-bottom: 20px;
+        .pagination {
+            margin-top: 20px;
         }
 
-        .search-container input[type="text"] {
-            padding: 8px;
-            width: 200px;
-            margin-right: 10px;
+        .pagination a {
+            margin: 0 5px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #666;
+            border-radius: 5px;
         }
 
-        .search-container input[type="submit"] {
-            padding: 8px 16px;
+        .pagination a:hover {
+            background-color: #666;
+            color: white;
+        }
+
+        .pagination a.active {
+            background-color: #666;
+            color: white;
         }
     </style>
 </head>
 <body>
 <div class="background"></div>
 <div class="container">
-    <h1>Played Matches</h1>
-    <div class="search-container">
-        <form action="ViewMatchesServlet" method="get">
-            <input type="text" name="search" placeholder="Search by player name" value="${param.search}">
-            <input type="submit" value="Search">
+    <h1>All Matches</h1>
+    <div class="form-container">
+        <a href="/main-page" class="home-link">Return to Home Page</a>
+        <form action="/matches" method="get" style="display: flex; align-items: center;">
+            <input type="text" name="playerName" class="input-field" placeholder="Enter player name"
+                   value="<%= (request.getParameter("playerName") != null) ? request.getParameter("playerName") : "" %>">
+            <button type="submit" class="button">Search Matches</button>
         </form>
     </div>
     <table>
@@ -117,39 +150,41 @@
         <tr>
             <th>Player 1</th>
             <th>Player 2</th>
-            <th>Result</th>
+            <th>Winner</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="match" items="${matches}">
-            <tr>
-                <td>${match.player1}</td>
-                <td>${match.player2}</td>
-                <td>${match.result}</td>
-            </tr>
-        </c:forEach>
+        <%
+            List<Match> matches = (List<Match>) request.getAttribute("matches");
+            for (Match match : matches) {
+        %>
+        <tr>
+            <td><%= match.getFirstPlayer().getName() %>
+            </td>
+            <td><%= match.getSecondPlayer().getName() %>
+            </td>
+            <td><%= match.getWinner().getName() %>
+            </td>
+        </tr>
+        <% } %>
         </tbody>
     </table>
     <div class="pagination">
-        <c:if test="${currentPage > 1}">
-            <a href="ViewMatchesServlet?page=${currentPage - 1}&search=${param.search}">&laquo; Previous</a>
-        </c:if>
-        <c:forEach begin="1" end="${totalPages}" var="i">
-            <c:choose>
-                <c:when test="${i == currentPage}">
-                    <a href="ViewMatchesServlet?page=${i}&search=${param.search}" style="font-weight:bold;">${i}</a>
-                </c:when>
-                <c:otherwise>
-                    <a href="ViewMatchesServlet?page=${i}&search=${param.search}">${i}</a>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-        <c:if test="${currentPage < totalPages}">
-            <a href="ViewMatchesServlet?page=${currentPage + 1}&search=${param.search}">Next &raquo;</a>
-        </c:if>
-    </div>
-    <div class="footer">
-        <p>Created by <a href="https://github.com/ArturChegur" target="_blank">ArturChegur</a></p>
+        <%
+            int currentPage = (int) request.getAttribute("currentPage");
+            int totalPages = (int) request.getAttribute("totalPages");
+            String playerName = (request.getParameter("playerName") != null) ? request.getParameter("playerName") : "";
+            if (currentPage > 1) {
+        %>
+        <a href="?page=<%= currentPage - 1 %>&playerName=<%= playerName %>">&laquo;</a>
+        <% } %>
+        <% for (int i = 1; i <= totalPages; i++) { %>
+        <a href="?page=<%= i %>&playerName=<%= playerName %>" <%= (i == currentPage) ? "class='active'" : "" %>><%= i %>
+        </a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+        <a href="?page=<%= currentPage + 1 %>&playerName=<%= playerName %>">&raquo;</a>
+        <% } %>
     </div>
 </div>
 </body>

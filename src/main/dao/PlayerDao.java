@@ -1,9 +1,7 @@
 package main.dao;
 
 import main.entity.Player;
-import main.exception.PlayerExistsException;
 import main.util.HibernateUtil;
-import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 
@@ -16,13 +14,11 @@ public class PlayerDao implements Dao<Player> {
     }
 
     @Override
-    public void add(Player player) throws PlayerExistsException {
+    public void add(Player player) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
             session.save(player);
             session.getTransaction().commit();
-        } catch (ConstraintViolationException e) {
-            throw new PlayerExistsException();
         }
     }
 

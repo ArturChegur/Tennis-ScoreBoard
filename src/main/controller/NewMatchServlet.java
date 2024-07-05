@@ -25,7 +25,10 @@ public class NewMatchServlet extends HttpServlet {
         String firstPlayer = req.getParameter("firstPlayer").trim();
         String secondPlayer = req.getParameter("secondPlayer").trim();
         String errorMessage = ParameterValidator.validateNames(firstPlayer, secondPlayer);
+
         if (errorMessage != null) {
+            req.setAttribute("firstPlayer", firstPlayer);
+            req.setAttribute("secondPlayer", secondPlayer);
             req.setAttribute("errorMessage", errorMessage);
             req.getRequestDispatcher("pages/new-match-page.jsp").forward(req, resp);
         } else {

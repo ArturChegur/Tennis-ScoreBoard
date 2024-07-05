@@ -19,14 +19,8 @@ public class MatchScoreController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("uuid") == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-        UUID uuid = UUID.fromString(req.getParameter("uuid"));
-        Match match = ongoingMatchesService.readMatch(uuid);
+        Match match = getMatchFromRequest(req, resp);
         if (match == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
         req.setAttribute("firstName", match.getFirstPlayer().getName());
@@ -43,17 +37,48 @@ public class MatchScoreController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String winner = req.getParameter("winner");
-        if (req.getParameter("uuid") == null) {
+        UUID uuid = getUuidFromRequest(req, resp);
+        if (uuid == null) {
+            return;
+        }
+        Match match = ongoingMatchesService.readMatch(uuid);
+        if (match == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        UUID uuid = UUID.fromString(req.getParameter("uuid"));
-        Match match = ongoingMatchesService.readMatch(uuid);
         matchScoreCalculationService.addPoint(match, winner);
         if (match.getWinner() != null) {
             ongoingMatchesService.deleteMatch(uuid);
-            req.getRequestDispatcher("pages/main-page.jsp").forward(req, resp);
+            resp.sendRedirect("/matches");
+            return;
         }
         doGet(req, resp);
+    }
+
+    private Match getMatchFromRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UUID uuid = getUuidFromRequest(req, resp);
+        if (uuid == null) {
+            return null;
+        }
+        Match match = ongoingMatchesService.readMatch(uuid);
+        if (match == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        return match;
+    }
+
+    private UUID getUuidFromRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String uuidParam = req.getParameter("uuid");
+        if (uuidParam == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        try {
+            return UUID.fromString(uuidParam);
+        } catch (IllegalArgumentException e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
     }
 }

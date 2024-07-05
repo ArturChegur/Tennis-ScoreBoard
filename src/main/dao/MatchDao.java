@@ -29,10 +29,10 @@ public class MatchDao implements Dao<Match> {
         }
     }
 
-    public List<Match> findByPlayerId(Integer id) {
+    public List<Match> findByPlayerName(String name) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Match> query = session.createQuery("from Match where firstPlayer.id = :playerId or secondPlayer.id = :playerId", Match.class);
-            query.setParameter("playerId", id);
+            Query<Match> query = session.createQuery("from Match where firstPlayer.name = :playerName or secondPlayer.name = :playerName", Match.class);
+            query.setParameter("playerName", name);
             return query.list();
         }
     }

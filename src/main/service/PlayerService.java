@@ -2,7 +2,7 @@ package main.service;
 
 import main.dao.PlayerDao;
 import main.entity.Player;
-import main.exception.PlayerExistsException;
+import org.hibernate.exception.ConstraintViolationException;
 
 public class PlayerService {
     private static final PlayerService INSTANCE = new PlayerService();
@@ -18,7 +18,7 @@ public class PlayerService {
         try {
             playerDao.add(player);
             player = playerDao.findByName(name);
-        } catch (PlayerExistsException e) {
+        } catch (ConstraintViolationException e) {
             player = playerDao.findByName(name);
         }
         return player;
