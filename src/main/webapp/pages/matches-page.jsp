@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Played Matches</title>
+    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Maven Pro', sans-serif;
@@ -85,12 +86,32 @@
         .footer a:hover {
             text-decoration: underline;
         }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 8px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        .search-container input[type="submit"] {
+            padding: 8px 16px;
+        }
     </style>
 </head>
 <body>
 <div class="background"></div>
 <div class="container">
     <h1>Played Matches</h1>
+    <div class="search-container">
+        <form action="ViewMatchesServlet" method="get">
+            <input type="text" name="search" placeholder="Search by player name" value="${param.search}">
+            <input type="submit" value="Search">
+        </form>
+    </div>
     <table>
         <thead>
         <tr>
@@ -110,9 +131,22 @@
         </tbody>
     </table>
     <div class="pagination">
+        <c:if test="${currentPage > 1}">
+            <a href="ViewMatchesServlet?page=${currentPage - 1}&search=${param.search}">&laquo; Previous</a>
+        </c:if>
         <c:forEach begin="1" end="${totalPages}" var="i">
-            <a href="ViewMatchesServlet?page=${i}">${i}</a>
+            <c:choose>
+                <c:when test="${i == currentPage}">
+                    <a href="ViewMatchesServlet?page=${i}&search=${param.search}" style="font-weight:bold;">${i}</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="ViewMatchesServlet?page=${i}&search=${param.search}">${i}</a>
+                </c:otherwise>
+            </c:choose>
         </c:forEach>
+        <c:if test="${currentPage < totalPages}">
+            <a href="ViewMatchesServlet?page=${currentPage + 1}&search=${param.search}">Next &raquo;</a>
+        </c:if>
     </div>
     <div class="footer">
         <p>Created by <a href="https://github.com/ArturChegur" target="_blank">ArturChegur</a></p>

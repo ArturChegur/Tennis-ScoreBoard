@@ -31,6 +31,10 @@ public class OngoingMatchesService {
         return currentMatches.get(uuid);
     }
 
+    public void deleteMatch(UUID uuid) {
+        currentMatches.remove(uuid);
+    }
+
     public static OngoingMatchesService getInstance() {
         return INSTANCE;
     }

@@ -33,12 +33,6 @@ public class PlayerDao implements Dao<Player> {
         }
     }
 
-    public Player findById(Integer id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Player.class, id);
-        }
-    }
-
     public Player findByName(String name) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Player> query = session.createQuery("from Player where name = :name", Player.class);

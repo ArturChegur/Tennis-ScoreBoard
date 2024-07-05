@@ -24,7 +24,7 @@ public class MatchScoreCalculationService {
                     match.getMatchScore().setFirstPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
                 }
             }
-        } else {
+        } else if (player.equals("second")) {
             if (isGameFinished(match, 2)) {
                 addGame(match, 2);
                 match.getMatchScore().setFirstPlayerScore(POINTS_SEQUENCE[0]);
@@ -101,20 +101,19 @@ public class MatchScoreCalculationService {
     private void addSet(Match match, int player) {
         int currentSet;
         if (player == 1) {
-            if (isMatchFinished(match)) {
+            currentSet = match.getMatchScore().getFirstPlayerSet();
+            match.getMatchScore().setFirstPlayerSet(currentSet + 1);
+            if (isMatchFinished(match, 1)) {
                 defineWinner(match, 1);
                 finishedMatchesPersistenceService.saveMatch(match);
-            } else {
-                currentSet = match.getMatchScore().getFirstPlayerSet();
-                match.getMatchScore().setFirstPlayerSet(currentSet + 1);
             }
         } else {
-            if (isMatchFinished(match)) {
+            currentSet = match.getMatchScore().getSecondPlayerSet();
+            match.getMatchScore().setSecondPlayerSet(currentSet + 1);
+            if (isMatchFinished(match, 2)) {
                 defineWinner(match, 2);
                 finishedMatchesPersistenceService.saveMatch(match);
             }
-            currentSet = match.getMatchScore().getSecondPlayerSet();
-            match.getMatchScore().setSecondPlayerSet(currentSet + 1);
         }
     }
 
@@ -135,8 +134,13 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private boolean isMatchFinished(Match match) {
-        return match.getMatchScore().getFirstPlayerSet() + match.getMatchScore().getSecondPlayerSet() == 2;
+    private boolean isMatchFinished(Match match, int player) {
+        if (player == 1) {
+            return match.getMatchScore().getFirstPlayerSet() == 2;
+        } else if (player == 2) {
+            return match.getMatchScore().getSecondPlayerSet() == 2;
+        }
+        return false;
     }
 
     private int getPosition(String score) {

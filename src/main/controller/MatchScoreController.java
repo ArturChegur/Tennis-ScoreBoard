@@ -51,6 +51,7 @@ public class MatchScoreController extends HttpServlet {
         Match match = ongoingMatchesService.readMatch(uuid);
         matchScoreCalculationService.addPoint(match, winner);
         if (match.getWinner() != null) {
+            ongoingMatchesService.deleteMatch(uuid);
             req.getRequestDispatcher("pages/main-page.jsp").forward(req, resp);
         }
         doGet(req, resp);
