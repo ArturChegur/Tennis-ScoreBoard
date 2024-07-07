@@ -23,7 +23,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('../images/background.jpg') no-repeat center center fixed;
+            background: url('images/background.jpg') no-repeat center center fixed;
             background-size: cover;
             filter: blur(9px);
             z-index: -1;
@@ -127,10 +127,6 @@
             color: white;
         }
 
-        .pagination a.active {
-            background-color: #666;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -138,8 +134,9 @@
 <div class="container">
     <h1>All Matches</h1>
     <div class="form-container">
-        <a href="/main-page" class="home-link">Return to Home Page</a>
-        <form action="/matches" method="get" style="display: flex; align-items: center;">
+        <a href="${pageContext.request.contextPath}/" class="home-link">Return to Home Page</a>
+        <form action="${pageContext.request.contextPath}/matches" method="get"
+              style="display: flex; align-items: center;">
             <input type="text" name="playerName" class="input-field" placeholder="Enter player name"
                    value="<%= (request.getParameter("playerName") != null) ? request.getParameter("playerName") : "" %>">
             <button type="submit" class="button">Search Matches</button>
@@ -179,7 +176,7 @@
         <a href="?page=<%= currentPage - 1 %>&playerName=<%= playerName %>">&laquo;</a>
         <% } %>
         <% for (int i = 1; i <= totalPages; i++) { %>
-        <a href="?page=<%= i %>&playerName=<%= playerName %>" <%= (i == currentPage) ? "class='active'" : "" %>><%= i %>
+        <a href="?page=<%= i %>&playerName=<%= playerName %>"<%= (i == currentPage) ? "class='active'" : "" %>><%= i %>
         </a>
         <% } %>
         <% if (currentPage < totalPages) { %>

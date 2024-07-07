@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import main.entity.Match;
+import main.entity.MatchScore;
 import main.service.MatchScoreCalculationService;
 import main.service.OngoingMatchesService;
 
@@ -19,18 +19,11 @@ public class MatchScoreController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Match match = getMatchFromRequest(req, resp);
-        if (match == null) {
+        MatchScore matchScore = getMatchFromRequest(req, resp);
+        if (matchScore == null) {
             return;
         }
-        req.setAttribute("firstName", match.getFirstPlayer().getName());
-        req.setAttribute("secondName", match.getSecondPlayer().getName());
-        req.setAttribute("firstSets", match.getMatchScore().getFirstPlayerSet());
-        req.setAttribute("firstGames", match.getMatchScore().getFirstPlayerGame());
-        req.setAttribute("firstPoints", match.getMatchScore().getFirstPlayerScore());
-        req.setAttribute("secondSets", match.getMatchScore().getSecondPlayerSet());
-        req.setAttribute("secondGames", match.getMatchScore().getSecondPlayerGame());
-        req.setAttribute("secondPoints", match.getMatchScore().getSecondPlayerScore());
+        req.setAttribute("match", matchScore);
         req.getRequestDispatcher("pages/match-score-page.jsp").forward(req, resp);
     }
 
@@ -41,43 +34,43 @@ public class MatchScoreController extends HttpServlet {
         if (uuid == null) {
             return;
         }
-        Match match = ongoingMatchesService.readMatch(uuid);
-        if (match == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        MatchScore matchScore = ongoingMatchesService.readMatch(uuid);
+        if (matchScore == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-        matchScoreCalculationService.addPoint(match, winner);
-        if (match.getWinner() != null) {
+        matchScoreCalculationService.addPoint(matchScore, winner);
+        if (matchScore.getWinner() != null) {
             ongoingMatchesService.deleteMatch(uuid);
-            resp.sendRedirect("/matches");
+            resp.sendRedirect("matches");
             return;
         }
         doGet(req, resp);
     }
 
-    private Match getMatchFromRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private MatchScore getMatchFromRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UUID uuid = getUuidFromRequest(req, resp);
         if (uuid == null) {
             return null;
         }
-        Match match = ongoingMatchesService.readMatch(uuid);
-        if (match == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        MatchScore matchScore = ongoingMatchesService.readMatch(uuid);
+        if (matchScore == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        return match;
+        return matchScore;
     }
 
     private UUID getUuidFromRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uuidParam = req.getParameter("uuid");
         if (uuidParam == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
         try {
             return UUID.fromString(uuidParam);
         } catch (IllegalArgumentException e) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
     }

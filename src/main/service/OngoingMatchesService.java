@@ -1,6 +1,6 @@
 package main.service;
 
-import main.entity.Match;
+import main.entity.MatchScore;
 import main.entity.Player;
 
 import java.util.UUID;
@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OngoingMatchesService {
     private static final OngoingMatchesService INSTANCE = new OngoingMatchesService();
     private static final PlayerService playerService = PlayerService.getInstance();
-    private static final ConcurrentHashMap<UUID, Match> currentMatches = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<UUID, MatchScore> currentMatches = new ConcurrentHashMap<>();
 
     private OngoingMatchesService() {
     }
@@ -18,16 +18,17 @@ public class OngoingMatchesService {
         UUID uuid = UUID.randomUUID();
         Player first = playerService.addPlayer(firstPlayer);
         Player second = playerService.addPlayer(secondPlayer);
-        Match match = Match.builder()
+        MatchScore match = MatchScore.builder()
                 .firstPlayer(first)
                 .secondPlayer(second)
-                .matchScore(new Match.MatchScore())
+                .firstPlayerScore("0")
+                .secondPlayerScore("0")
                 .build();
         currentMatches.put(uuid, match);
         return uuid;
     }
 
-    public Match readMatch(UUID uuid) {
+    public MatchScore readMatch(UUID uuid) {
         return currentMatches.get(uuid);
     }
 

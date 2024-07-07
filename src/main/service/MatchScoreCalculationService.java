@@ -1,6 +1,6 @@
 package main.service;
 
-import main.entity.Match;
+import main.entity.MatchScore;
 
 public class MatchScoreCalculationService {
     private static final String[] POINTS_SEQUENCE = {"0", "15", "30", "40", "AD"};
@@ -10,44 +10,44 @@ public class MatchScoreCalculationService {
     private MatchScoreCalculationService() {
     }
 
-    public void addPoint(Match match, String player) {
+    public void addPoint(MatchScore matchScore, String player) {
         if (player.equals("first")) {
-            if (isGameFinished(match, 1)) {
-                addGame(match, 1);
-                match.getMatchScore().setFirstPlayerScore(POINTS_SEQUENCE[0]);
-                match.getMatchScore().setSecondPlayerScore(POINTS_SEQUENCE[0]);
+            if (isGameFinished(matchScore, 1)) {
+                addGame(matchScore, 1);
+                matchScore.setFirstPlayerScore(POINTS_SEQUENCE[0]);
+                matchScore.setSecondPlayerScore(POINTS_SEQUENCE[0]);
             } else {
-                if (isEqualMore(match, 1)) {
-                    makeEqualScore(match);
+                if (isEqualMore(matchScore, 1)) {
+                    makeEqualScore(matchScore);
                 } else {
-                    int currentScore = getPosition(match.getMatchScore().getFirstPlayerScore());
-                    match.getMatchScore().setFirstPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
+                    int currentScore = getPosition(matchScore.getFirstPlayerScore());
+                    matchScore.setFirstPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
                 }
             }
         } else if (player.equals("second")) {
-            if (isGameFinished(match, 2)) {
-                addGame(match, 2);
-                match.getMatchScore().setFirstPlayerScore(POINTS_SEQUENCE[0]);
-                match.getMatchScore().setSecondPlayerScore(POINTS_SEQUENCE[0]);
+            if (isGameFinished(matchScore, 2)) {
+                addGame(matchScore, 2);
+                matchScore.setFirstPlayerScore(POINTS_SEQUENCE[0]);
+                matchScore.setSecondPlayerScore(POINTS_SEQUENCE[0]);
             } else {
-                if (isEqualMore(match, 2)) {
-                    makeEqualScore(match);
+                if (isEqualMore(matchScore, 2)) {
+                    makeEqualScore(matchScore);
                 } else {
-                    int currentScore = getPosition(match.getMatchScore().getSecondPlayerScore());
-                    match.getMatchScore().setSecondPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
+                    int currentScore = getPosition(matchScore.getSecondPlayerScore());
+                    matchScore.setSecondPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
                 }
             }
         }
     }
 
-    private void makeEqualScore(Match match) {
-        match.getMatchScore().setFirstPlayerScore(POINTS_SEQUENCE[3]);
-        match.getMatchScore().setSecondPlayerScore(POINTS_SEQUENCE[3]);
+    private void makeEqualScore(MatchScore matchScore) {
+        matchScore.setFirstPlayerScore(POINTS_SEQUENCE[3]);
+        matchScore.setSecondPlayerScore(POINTS_SEQUENCE[3]);
     }
 
-    private boolean isEqualMore(Match match, int player) {
-        int firstPlayerScore = getPosition(match.getMatchScore().getFirstPlayerScore());
-        int secondPlayerScore = getPosition(match.getMatchScore().getSecondPlayerScore());
+    private boolean isEqualMore(MatchScore matchScore, int player) {
+        int firstPlayerScore = getPosition(matchScore.getFirstPlayerScore());
+        int secondPlayerScore = getPosition(matchScore.getSecondPlayerScore());
         if (player == 1) {
             return firstPlayerScore == 3 && secondPlayerScore == 4;
         } else {
@@ -55,9 +55,9 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private boolean isGameFinished(Match match, int player) {
-        int firstPlayerScore = getPosition(match.getMatchScore().getFirstPlayerScore());
-        int secondPlayerScore = getPosition(match.getMatchScore().getSecondPlayerScore());
+    private boolean isGameFinished(MatchScore matchScore, int player) {
+        int firstPlayerScore = getPosition(matchScore.getFirstPlayerScore());
+        int secondPlayerScore = getPosition(matchScore.getSecondPlayerScore());
         if (player == 1) {
             return firstPlayerScore == 4 || firstPlayerScore >= (secondPlayerScore + 1) && firstPlayerScore == 3;
         } else {
@@ -65,32 +65,32 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private void addGame(Match match, int player) {
+    private void addGame(MatchScore matchScore, int player) {
         int currentGame;
         if (player == 1) {
-            if (isSetFinished(match, 1)) {
-                addSet(match, 1);
-                match.getMatchScore().setFirstPlayerGame(0);
-                match.getMatchScore().setSecondPlayerGame(0);
+            if (isSetFinished(matchScore, 1)) {
+                addSet(matchScore, 1);
+                matchScore.setFirstPlayerGame(0);
+                matchScore.setSecondPlayerGame(0);
             } else {
-                currentGame = match.getMatchScore().getFirstPlayerGame();
-                match.getMatchScore().setFirstPlayerGame(currentGame + 1);
+                currentGame = matchScore.getFirstPlayerGame();
+                matchScore.setFirstPlayerGame(currentGame + 1);
             }
         } else {
-            if (isSetFinished(match, 2)) {
-                addSet(match, 2);
-                match.getMatchScore().setFirstPlayerGame(0);
-                match.getMatchScore().setSecondPlayerGame(0);
+            if (isSetFinished(matchScore, 2)) {
+                addSet(matchScore, 2);
+                matchScore.setFirstPlayerGame(0);
+                matchScore.setSecondPlayerGame(0);
             } else {
-                currentGame = match.getMatchScore().getSecondPlayerGame();
-                match.getMatchScore().setSecondPlayerGame(currentGame + 1);
+                currentGame = matchScore.getSecondPlayerGame();
+                matchScore.setSecondPlayerGame(currentGame + 1);
             }
         }
     }
 
-    private boolean isSetFinished(Match match, int player) {
-        int firstPlayerGame = match.getMatchScore().getFirstPlayerGame();
-        int secondPlayerGame = match.getMatchScore().getSecondPlayerGame();
+    private boolean isSetFinished(MatchScore matchScore, int player) {
+        int firstPlayerGame = matchScore.getFirstPlayerGame();
+        int secondPlayerGame = matchScore.getSecondPlayerGame();
         if (player == 1) {
             return firstPlayerGame == 6 || firstPlayerGame >= (secondPlayerGame + 1) && firstPlayerGame == 5;
         } else {
@@ -98,47 +98,47 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private void addSet(Match match, int player) {
+    private void addSet(MatchScore matchScore, int player) {
         int currentSet;
         if (player == 1) {
-            currentSet = match.getMatchScore().getFirstPlayerSet();
-            match.getMatchScore().setFirstPlayerSet(currentSet + 1);
-            if (isMatchFinished(match, 1)) {
-                defineWinner(match, 1);
-                finishedMatchesPersistenceService.saveMatch(match);
+            currentSet = matchScore.getFirstPlayerSet();
+            matchScore.setFirstPlayerSet(currentSet + 1);
+            if (isMatchFinished(matchScore, 1)) {
+                defineWinner(matchScore, 1);
+                finishedMatchesPersistenceService.saveMatch(matchScore);
             }
         } else {
-            currentSet = match.getMatchScore().getSecondPlayerSet();
-            match.getMatchScore().setSecondPlayerSet(currentSet + 1);
-            if (isMatchFinished(match, 2)) {
-                defineWinner(match, 2);
-                finishedMatchesPersistenceService.saveMatch(match);
+            currentSet = matchScore.getSecondPlayerSet();
+            matchScore.setSecondPlayerSet(currentSet + 1);
+            if (isMatchFinished(matchScore, 2)) {
+                defineWinner(matchScore, 2);
+                finishedMatchesPersistenceService.saveMatch(matchScore);
             }
         }
     }
 
-    private void defineWinner(Match match, int player) {
+    private void defineWinner(MatchScore matchScore, int player) {
         int firstPlayerSet;
         int secondPlayerSet;
         if (player == 1) {
-            firstPlayerSet = match.getMatchScore().getFirstPlayerSet() + 1;
-            secondPlayerSet = match.getMatchScore().getSecondPlayerSet();
+            firstPlayerSet = matchScore.getFirstPlayerSet() + 1;
+            secondPlayerSet = matchScore.getSecondPlayerSet();
         } else {
-            firstPlayerSet = match.getMatchScore().getFirstPlayerSet();
-            secondPlayerSet = match.getMatchScore().getSecondPlayerSet() + 1;
+            firstPlayerSet = matchScore.getFirstPlayerSet();
+            secondPlayerSet = matchScore.getSecondPlayerSet() + 1;
         }
         if (firstPlayerSet > secondPlayerSet) {
-            match.setWinner(match.getFirstPlayer());
+            matchScore.setWinner(matchScore.getFirstPlayer());
         } else {
-            match.setWinner(match.getSecondPlayer());
+            matchScore.setWinner(matchScore.getSecondPlayer());
         }
     }
 
-    private boolean isMatchFinished(Match match, int player) {
+    private boolean isMatchFinished(MatchScore matchScore, int player) {
         if (player == 1) {
-            return match.getMatchScore().getFirstPlayerSet() == 2;
+            return matchScore.getFirstPlayerSet() == 2;
         } else if (player == 2) {
-            return match.getMatchScore().getSecondPlayerSet() == 2;
+            return matchScore.getSecondPlayerSet() == 2;
         }
         return false;
     }

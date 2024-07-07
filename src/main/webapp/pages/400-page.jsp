@@ -65,8 +65,8 @@
 <body>
 <div class="background"></div>
 <div class="container">
-    <h1>404</h1>
-    <p>Sorry, the page you are looking for does not exist.</p>
+    <h1>400</h1>
+    <p>Sorry, we got bad request from client</p>
     <p><a href="${pageContext.request.contextPath}/">Go to Home Page</a></p>
 </div>
 </body>

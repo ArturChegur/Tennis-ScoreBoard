@@ -1,3 +1,4 @@
+<%@ page import="main.entity.MatchScore" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -21,7 +22,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('../images/background.jpg') no-repeat center center fixed;
+            background: url('images/background.jpg') no-repeat center center fixed;
             background-size: cover;
             filter: blur(9px);
             z-index: -1;
@@ -108,42 +109,45 @@
         </tr>
         </thead>
         <tbody>
+        <%
+            MatchScore match = (MatchScore) request.getAttribute("match");
+        %>
         <tr>
             <td>
-                <input type="text" name="player1Name" value="<%= request.getAttribute("firstName") %>"
+                <input type="text" name="player1Name" value="<%= match.getFirstPlayer().getName() %>"
                        class="readonly-input" readonly>
             </td>
-            <td id="player1Sets"><%= request.getAttribute("firstSets") %>
+            <td id="player1Sets"><%= match.getFirstPlayerSet() %>
             </td>
-            <td id="player1Games"><%= request.getAttribute("firstGames") %>
+            <td id="player1Games"><%= match.getFirstPlayerGame() %>
             </td>
-            <td id="player1Points"><%= request.getAttribute("firstPoints") %>
+            <td id="player1Points"><%= match.getFirstPlayerScore() %>
             </td>
         </tr>
         <tr>
             <td>
-                <input type="text" name="player2Name" value="<%= request.getAttribute("secondName") %>"
+                <input type="text" name="player2Name" value="<%= match.getSecondPlayer().getName() %>"
                        class="readonly-input" readonly>
             </td>
-            <td id="player2Sets"><%= request.getAttribute("secondSets") %>
+            <td id="player2Sets"><%= match.getSecondPlayerSet() %>
             </td>
-            <td id="player2Games"><%= request.getAttribute("secondGames") %>
+            <td id="player2Games"><%= match.getSecondPlayerGame() %>
             </td>
-            <td id="player2Points"><%= request.getAttribute("secondPoints") %>
+            <td id="player2Points"><%= match.getSecondPlayerScore() %>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="button-container">
-        <form action="/match-score" method="post" style="display: inline;">
+        <form action="${pageContext.request.contextPath}/match-score" method="post" style="display: inline;">
             <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
             <input type="hidden" name="winner" value="first">
-            <button type="submit" class="button"><%= request.getAttribute("firstName") %> won point</button>
+            <button type="submit" class="button"><%=  match.getFirstPlayer().getName() %> won point</button>
         </form>
-        <form action="/match-score" method="post" style="display: inline;">
+        <form action="${pageContext.request.contextPath}/match-score" method="post" style="display: inline;">
             <input type="hidden" name="uuid" value="<%= request.getParameter("uuid") %>">
             <input type="hidden" name="winner" value="second">
-            <button type="submit" class="button"><%= request.getAttribute("secondName") %> won point</button>
+            <button type="submit" class="button"><%= match.getSecondPlayer().getName() %> won point</button>
         </form>
     </div>
 </div>

@@ -2,18 +2,24 @@ package main.service;
 
 import main.dao.MatchDao;
 import main.entity.Match;
+import main.entity.MatchScore;
 
 import java.util.List;
 
 public class FinishedMatchesPersistenceService {
     private static final FinishedMatchesPersistenceService INSTANCE = new FinishedMatchesPersistenceService();
     private static final MatchDao matchDao = MatchDao.getInstance();
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 5;
 
     private FinishedMatchesPersistenceService() {
     }
 
-    public void saveMatch(Match match) {
+    public void saveMatch(MatchScore matchScore) {
+        Match match = Match.builder()
+                .firstPlayer(matchScore.getFirstPlayer())
+                .secondPlayer(matchScore.getSecondPlayer())
+                .winner(matchScore.getWinner())
+                .build();
         matchDao.add(match);
     }
 

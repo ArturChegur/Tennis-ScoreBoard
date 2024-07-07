@@ -21,7 +21,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('../images/background.jpg') no-repeat center center fixed;
+            background: url('images/background.jpg') no-repeat center center fixed;
             background-size: cover;
             filter: blur(9px);
             z-index: -1;
@@ -52,12 +52,8 @@
             margin: 30px 0;
         }
 
-        .buttons form {
+        .buttons a {
             display: inline-block;
-            margin: 0 10px;
-        }
-
-        .buttons button {
             padding: 12px 35px;
             font-size: 16px;
             background-color: transparent;
@@ -66,10 +62,10 @@
             border-radius: 5px;
             transition: transform 0.15s ease, background-color 0.15s ease;
             cursor: pointer;
-            outline: none;
+            text-decoration: none;
         }
 
-        .buttons button:hover {
+        .buttons a:hover {
             background: black;
             color: white;
         }
@@ -95,12 +91,8 @@
 <div class="container">
     <h1>Welcome to the Tennis Scoreboard</h1>
     <div class="buttons">
-        <form action="/new-match" method="get">
-            <button type="submit">Play a Match</button>
-        </form>
-        <form action="/matches" method="get">
-            <button type="submit">View Matches</button>
-        </form>
+        <a href="${pageContext.request.contextPath}/new-match" class="button">Play a Match</a>
+        <a href="${pageContext.request.contextPath}/matches" class="button">View Matches</a>
     </div>
     <div class="footer">
         <p>Created by <a href="https://github.com/ArturChegur" target="_blank">ArturChegur</a></p>

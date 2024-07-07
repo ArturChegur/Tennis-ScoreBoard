@@ -21,7 +21,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('../images/background.jpg') no-repeat center center fixed;
+            background: url('images/background.jpg') no-repeat center center fixed;
             background-size: cover;
             filter: blur(9px);
             z-index: -1;
@@ -81,7 +81,7 @@
 <div class="background"></div>
 <div class="container">
     <h1>Start a New Match</h1>
-    <form action="/new-match" method="post">
+    <form action="${pageContext.request.contextPath}/new-match" method="post">
         <input type="text" name="firstPlayer" placeholder="First player" required
                value="<%= (request.getAttribute("firstPlayer") != null) ? request.getAttribute("firstPlayer") : "" %>">
         <input type="text" name="secondPlayer" placeholder="Second player" required

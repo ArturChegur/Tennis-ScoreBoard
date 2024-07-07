@@ -12,14 +12,20 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/matches")
-public class PlayedMatchesServlet extends HttpServlet {
+public class PlayedMatchesController extends HttpServlet {
     private static final FinishedMatchesPersistenceService finishedMatchesPersistenceService = FinishedMatchesPersistenceService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String playerName = req.getParameter("playerName");
         String pageStr = req.getParameter("page");
-        int currentPage = (pageStr == null) ? 1 : Integer.parseInt(pageStr);
+        int currentPage;
+        try {
+            currentPage = (pageStr == null) ? 1 : Integer.parseInt(pageStr);
+        } catch (ClassCastException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         List<Match> matches;
         int totalPages;
 
