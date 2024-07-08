@@ -24,27 +24,23 @@ public class FinishedMatchesPersistenceService {
     }
 
     public List<Match> getAllMatches(int currentPage) {
-        List<Match> matches = matchDao.findAll();
-        int totalMatches = matches.size();
-        int start = (currentPage - 1) * PAGE_SIZE;
-        int end = Math.min(start + PAGE_SIZE, totalMatches);
-        return matches.subList(start, end);
+        int offset = (currentPage - 1) * PAGE_SIZE;
+        return matchDao.findAllWithPagination(PAGE_SIZE, offset);
     }
 
     public List<Match> getPlayerMatches(int currentPage, String playerName) {
-        List<Match> matches = matchDao.findByPlayerName(playerName);
-        int totalMatches = matches.size();
-        int start = (currentPage - 1) * PAGE_SIZE;
-        int end = Math.min(start + PAGE_SIZE, totalMatches);
-        return matches.subList(start, end);
+        int offset = (currentPage - 1) * PAGE_SIZE;
+        return matchDao.findByPlayerNameWithPagination(playerName, PAGE_SIZE, offset);
     }
 
     public int getTotalPages(boolean isForPlayer, String playerName) {
+        long totalMatches;
         if (isForPlayer) {
-            return (int) Math.ceil((double) matchDao.findByPlayerName(playerName).size() / PAGE_SIZE);
+            totalMatches = matchDao.countMatchesByPlayerName(playerName);
         } else {
-            return (int) Math.ceil((double) matchDao.findAll().size() / PAGE_SIZE);
+            totalMatches = matchDao.countAllMatches();
         }
+        return (int) Math.ceil((double) totalMatches / PAGE_SIZE);
     }
 
     public static FinishedMatchesPersistenceService getInstance() {

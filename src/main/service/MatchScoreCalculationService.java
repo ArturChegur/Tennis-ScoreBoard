@@ -16,27 +16,28 @@ public class MatchScoreCalculationService {
                 addGame(matchScore, 1);
                 matchScore.setFirstPlayerScore(POINTS_SEQUENCE[0]);
                 matchScore.setSecondPlayerScore(POINTS_SEQUENCE[0]);
-            } else {
-                if (isEqualMore(matchScore, 1)) {
-                    makeEqualScore(matchScore);
-                } else {
-                    int currentScore = getPosition(matchScore.getFirstPlayerScore());
-                    matchScore.setFirstPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
-                }
+                return;
             }
-        } else if (player.equals("second")) {
+            if (isEqualMore(matchScore, 1)) {
+                makeEqualScore(matchScore);
+                return;
+            }
+            int currentScore = getPosition(matchScore.getFirstPlayerScore());
+            matchScore.setFirstPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
+        }
+        if (player.equals("second")) {
             if (isGameFinished(matchScore, 2)) {
                 addGame(matchScore, 2);
                 matchScore.setFirstPlayerScore(POINTS_SEQUENCE[0]);
                 matchScore.setSecondPlayerScore(POINTS_SEQUENCE[0]);
-            } else {
-                if (isEqualMore(matchScore, 2)) {
-                    makeEqualScore(matchScore);
-                } else {
-                    int currentScore = getPosition(matchScore.getSecondPlayerScore());
-                    matchScore.setSecondPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
-                }
+                return;
             }
+            if (isEqualMore(matchScore, 2)) {
+                makeEqualScore(matchScore);
+                return;
+            }
+            int currentScore = getPosition(matchScore.getSecondPlayerScore());
+            matchScore.setSecondPlayerScore(POINTS_SEQUENCE[currentScore + 1]);
         }
     }
 
@@ -50,9 +51,8 @@ public class MatchScoreCalculationService {
         int secondPlayerScore = getPosition(matchScore.getSecondPlayerScore());
         if (player == 1) {
             return firstPlayerScore == 3 && secondPlayerScore == 4;
-        } else {
-            return firstPlayerScore == 4 && secondPlayerScore == 3;
         }
+        return firstPlayerScore == 4 && secondPlayerScore == 3;
     }
 
     private boolean isGameFinished(MatchScore matchScore, int player) {
@@ -60,9 +60,8 @@ public class MatchScoreCalculationService {
         int secondPlayerScore = getPosition(matchScore.getSecondPlayerScore());
         if (player == 1) {
             return firstPlayerScore == 4 || firstPlayerScore >= (secondPlayerScore + 1) && firstPlayerScore == 3;
-        } else {
-            return secondPlayerScore == 4 || secondPlayerScore >= (firstPlayerScore + 1) && secondPlayerScore == 3;
         }
+        return secondPlayerScore == 4 || secondPlayerScore >= (firstPlayerScore + 1) && secondPlayerScore == 3;
     }
 
     private void addGame(MatchScore matchScore, int player) {
@@ -72,19 +71,20 @@ public class MatchScoreCalculationService {
                 addSet(matchScore, 1);
                 matchScore.setFirstPlayerGame(0);
                 matchScore.setSecondPlayerGame(0);
-            } else {
-                currentGame = matchScore.getFirstPlayerGame();
-                matchScore.setFirstPlayerGame(currentGame + 1);
+                return;
             }
-        } else {
+            currentGame = matchScore.getFirstPlayerGame();
+            matchScore.setFirstPlayerGame(currentGame + 1);
+        }
+        if (player == 2) {
             if (isSetFinished(matchScore, 2)) {
                 addSet(matchScore, 2);
                 matchScore.setFirstPlayerGame(0);
                 matchScore.setSecondPlayerGame(0);
-            } else {
-                currentGame = matchScore.getSecondPlayerGame();
-                matchScore.setSecondPlayerGame(currentGame + 1);
+                return;
             }
+            currentGame = matchScore.getSecondPlayerGame();
+            matchScore.setSecondPlayerGame(currentGame + 1);
         }
     }
 
@@ -93,9 +93,8 @@ public class MatchScoreCalculationService {
         int secondPlayerGame = matchScore.getSecondPlayerGame();
         if (player == 1) {
             return firstPlayerGame == 6 || firstPlayerGame >= (secondPlayerGame + 1) && firstPlayerGame == 5;
-        } else {
-            return secondPlayerGame == 6 || secondPlayerGame >= (firstPlayerGame + 1) && secondPlayerGame == 5;
         }
+        return secondPlayerGame == 6 || secondPlayerGame >= (firstPlayerGame + 1) && secondPlayerGame == 5;
     }
 
     private void addSet(MatchScore matchScore, int player) {
@@ -107,7 +106,8 @@ public class MatchScoreCalculationService {
                 defineWinner(matchScore, 1);
                 finishedMatchesPersistenceService.saveMatch(matchScore);
             }
-        } else {
+        }
+        if (player == 2) {
             currentSet = matchScore.getSecondPlayerSet();
             matchScore.setSecondPlayerSet(currentSet + 1);
             if (isMatchFinished(matchScore, 2)) {
