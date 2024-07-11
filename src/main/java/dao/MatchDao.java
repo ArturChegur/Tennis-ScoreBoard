@@ -1,7 +1,7 @@
-package main.dao;
+package dao;
 
-import main.entity.Match;
-import main.util.HibernateUtil;
+import entity.Match;
+import util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 

@@ -1,13 +1,13 @@
-package main.controller;
+package controller;
 
+import entity.MatchScore;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import main.entity.MatchScore;
-import main.service.MatchScoreCalculationService;
-import main.service.OngoingMatchesService;
+import service.MatchScoreCalculationService;
+import service.OngoingMatchesService;
 
 import java.io.IOException;
 import java.util.UUID;

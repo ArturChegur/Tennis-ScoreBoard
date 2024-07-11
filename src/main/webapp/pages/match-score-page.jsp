@@ -1,4 +1,4 @@
-<%@ page import="main.entity.MatchScore" %>
+<%@ page import="entity.MatchScore" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>

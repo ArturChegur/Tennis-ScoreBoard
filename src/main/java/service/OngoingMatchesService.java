@@ -1,7 +1,7 @@
-package main.service;
+package service;
 
-import main.entity.MatchScore;
-import main.entity.Player;
+import entity.MatchScore;
+import entity.Player;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;

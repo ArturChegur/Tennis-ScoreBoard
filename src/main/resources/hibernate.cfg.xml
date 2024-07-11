@@ -14,7 +14,7 @@
         <property name="format_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
-        <mapping class="main.entity.Player"/>
-        <mapping class="main.entity.Match"/>
+        <mapping class="entity.Player"/>
+        <mapping class="entity.Match"/>
     </session-factory>
 </hibernate-configuration>

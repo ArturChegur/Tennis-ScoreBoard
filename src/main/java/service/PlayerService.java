@@ -1,7 +1,7 @@
-package main.service;
+package service;
 
-import main.dao.PlayerDao;
-import main.entity.Player;
+import dao.PlayerDao;
+import entity.Player;
 import org.hibernate.exception.ConstraintViolationException;
 
 public class PlayerService {

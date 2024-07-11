@@ -1,7 +1,7 @@
-package main.util;
+package util;
 
-import main.entity.Match;
-import main.entity.Player;
+import entity.Match;
+import entity.Player;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.cfg.Configuration;

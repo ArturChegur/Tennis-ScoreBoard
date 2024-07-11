@@ -1,4 +1,4 @@
-package main.entity;
+package entity;
 
 import lombok.Builder;
 import lombok.Getter;

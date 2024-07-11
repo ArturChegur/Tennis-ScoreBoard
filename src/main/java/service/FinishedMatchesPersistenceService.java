@@ -1,8 +1,8 @@
-package main.service;
+package service;
 
-import main.dao.MatchDao;
-import main.entity.Match;
-import main.entity.MatchScore;
+import dao.MatchDao;
+import entity.Match;
+import entity.MatchScore;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package main.dao;
+package dao;
 
-import main.entity.Player;
-import main.util.HibernateUtil;
+import entity.Player;
+import util.HibernateUtil;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 

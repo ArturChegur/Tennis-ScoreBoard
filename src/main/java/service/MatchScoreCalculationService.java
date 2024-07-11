@@ -1,6 +1,6 @@
-package main.service;
+package service;
 
-import main.entity.MatchScore;
+import entity.MatchScore;
 
 public class MatchScoreCalculationService {
     private static final String[] POINTS_SEQUENCE = {"0", "15", "30", "40", "AD"};
